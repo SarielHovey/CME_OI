@@ -71,7 +71,8 @@ def export_parquet(df:pandas.DataFrame, trade_date:str) -> None:
             LOWER(TRIM(subcategory)) AS subcategory,
             CAST (value AS LONG) AS value,
             DATE '{trade_date}' AS trade_date,
-            STRFTIME(TODAY(), '%Y-%m-%d') AS ds
+            TODAY() AS last_update_date,
+            '{trade_date}' AS ds
         FROM raw
         """
     )
@@ -93,3 +94,4 @@ if __name__ == "__main__":
 
     df = clean_oi(args.file_path, args.ticker)
     export_parquet(df, args.trade_date)
+
